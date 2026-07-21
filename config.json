@@ -1,0 +1,30 @@
+{
+  "mode": "hybrid",
+  "timezone": "Asia/Kolkata",
+  "apiBase": "",
+  "apiBaseNote": "Set this to your deployed Cloudflare Worker URL, e.g. https://marketmind-api.yoursubdomain.workers.dev — see SETUP_GUIDE.md. Leave blank to keep using static snapshot data only.",
+  "refreshIntervalMinutes": 5,
+  "live_connectors": {
+    "fx": {
+      "provider": "Frankfurter",
+      "enabled": true,
+      "note": "Called directly from the browser — free, no key needed."
+    },
+    "market_prices": {
+      "provider": "TwelveData",
+      "enabled": true,
+      "note": "Key lives as a Cloudflare Worker secret, never in this public file. See SETUP_GUIDE.md."
+    },
+    "macro": {
+      "provider": "AlphaVantage",
+      "enabled": true,
+      "note": "Key lives as a Cloudflare Worker secret, never in this public file. See SETUP_GUIDE.md."
+    },
+    "news": {
+      "provider": "Free RSS (Economic Times, Business Standard)",
+      "enabled": true,
+      "note": "Fetched and parsed by the Worker, no key needed."
+    }
+  },
+  "fallback_to_demo": true
+}
