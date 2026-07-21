@@ -1,1 +1,0 @@
-const C='mm-v3';const A=['./','./index.html','./manifest.json','./config.json','./icons/icon-192.png','./icons/icon-512.png'];self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.addAll(A))));self.addEventListener('fetch',e=>e.respondWith(fetch(e.request).catch(()=>caches.match(e.request))));
