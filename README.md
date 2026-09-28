@@ -1,6 +1,6 @@
-# MarketMind AI v5
+# MarketMind AI v6 (development branch)
 
-## New in v5
+## v6 reliability upgrade — in progress
 - Version bump from v4 → v5 (same feature set, refreshed labelling throughout the app)
 - Results Calendar: Q1 FY27 earnings dates (reported + upcoming), with your holdings flagged ★
 - My Portfolio: add holdings (ticker, qty, avg cost, current price) — saved in this browser's local storage, nothing sent anywhere
@@ -24,3 +24,10 @@
 ## Important
 - Commodity prices and news use demo fallbacks until licensed APIs are connected. Do not expose paid API keys in a public GitHub repository; use a backend or serverless function.
 - Portfolio holdings are stored in this browser's local storage only — they are device/browser-specific and are not backed up or synced elsewhere.
+
+## v6 reliability changes (28 Sep 2026)
+- Development branch: `marketmind-v6` (production `main` remains unchanged).
+- Service-worker cache bumped to v6 and old caches are removed on activation.
+- Static assets use network-first loading to reduce stale PWA screens.
+- Silent demo fallback disabled in config; unavailable live data should be surfaced rather than presented as current.
+- Next: frontend LIVE/DELAYED/STALE badges and backend health, then institutional positioning and portfolio stress integration.
