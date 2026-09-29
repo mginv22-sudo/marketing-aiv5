@@ -180,6 +180,13 @@ async function loadLiveData(){
     liveBadge.className='pill down';
   }
 }
+function isCurrentIntelligence(j){
+  if(!j || !j.updatedAt) return false;
+  const updated=new Date(j.updatedAt);
+  if(Number.isNaN(updated.getTime())) return false;
+  return (Date.now()-updated.getTime()) < 24*60*60*1000;
+}
+
 loadConfig().then(loadLiveData);
 setInterval(()=>{ if(API_BASE) loadLiveData(); }, 5*60*1000);
 
