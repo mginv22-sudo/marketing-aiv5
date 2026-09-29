@@ -156,27 +156,25 @@ async function loadLiveData(){
         niftyDelta.className=chg>=0?'up':'down';
         anyLive=true;
       }
-      if(j.market.brent && !j.market.brent.error){
-        brentVal.textContent='$'+Number(j.market.brent.price).toFixed(2);
-        brentDelta.textContent='live via TwelveData · tap for detail';
-        anyLive=true;
-      }
-    }
-    if(j.macro){
-      if(j.macro.us10y && !j.macro.us10y.error){T.chips.m[1]=['US 10Y Treasury',j.macro.us10y.value+'%','live, '+j.macro.us10y.date]}
-      if(j.macro.brentAV && !j.macro.brentAV.error && (!j.market || !j.market.brent || j.market.brent.error)){
-        brentVal.textContent='$'+Number(j.macro.brentAV.value).toFixed(2);
-        brentDelta.textContent='live via AlphaVantage · tap for detail';
-        anyLive=true;
-      }
-    }
+     if(j.macro){
+  if(j.macro.us10y && !j.macro.us10y.error){
+    T.chips.m[1]=['US 10Y Treasury',j.macro.us10y.value+'%','live, '+j.macro.us10y.date];
+  }
+
+  if(j.macro.brent && !j.macro.brent.error){
+    brentVal.textContent='$'+Number(j.macro.brent.value).toFixed(2);
+    brentDelta.textContent='live via EIA · '+j.macro.brent.date+' · tap for detail';
+    anyLive=true;
+  }
+}
+      
     if(j.headlines && j.headlines.length){
       headlinesList.innerHTML=j.headlines.filter(h=>h.title && !h.error).slice(0,12).map(h=>
         `<div style="padding:9px 0;border-top:1px solid var(--line)"><a href="${h.link}" target="_blank" rel="noopener" style="color:var(--t);text-decoration:none;font-size:12.5px">${h.title}</a><div class="tiny muted" style="margin-top:3px">${h.source||''}${h.pubDate?' · '+h.pubDate:''}</div></div>`
       ).join('');
       anyLive=true;
     }
-    snapLiveNote.textContent=j.updatedAt?('· backend updated '+new Date(j.updatedAt).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})):'';
+    snapLiveNote.textContent=j.updatedAtIST?('· backend updated '+j.updatedAtIST):'';
     liveBadge.textContent=anyLive?'Live data connected':'Backend reachable, no fields live yet';
     liveBadge.className=anyLive?'pill up':'pill warn';
   }catch(e){
