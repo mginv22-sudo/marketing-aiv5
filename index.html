@@ -32,7 +32,7 @@
 
 <article class="card sectors"><h3>SECTOR RANKING</h3><table><tr><th>Sector</th><th>Score</th><th>Trend</th></tr><tr><td>Financials</td><td>85</td><td class="up">Improving</td></tr><tr><td>IT Services</td><td>80</td><td class="up">Strong (weak ₹)</td></tr><tr><td>Auto</td><td>76</td><td class="up">Strong</td></tr><tr><td>Metals</td><td>52</td><td class="warn">Mixed</td></tr><tr><td>Pharma (export)</td><td>46</td><td class="down">Weak</td></tr><tr><td>Oil Marketing/Aviation</td><td>32</td><td class="down">Weak</td></tr></table></article>
 
-<article class="card risks"><h3>RISK DASHBOARD</h3><div class="risk"><span>Crude / Hormuz oil shock</span><b class="down">High</b></div><div class="risk"><span>Fed hawkishness / global rates</span><b class="warn">Elevated</b></div><div class="risk"><span>US tariff deadline (Jul 24)</span><b class="warn">Elevated</b></div><div class="risk"><span>Global AI/semiconductor de-rating</span><b class="down">High</b></div><div class="risk"><span>India Q1 FY27 earnings risk</span><b class="up">Low–Moderate</b></div></article>
+<article class="card risks"><h3>RISK DASHBOARD</h3><div id="liveRiskDashboard"><div class="risk"><span>Loading current risk signals…</span><b class="warn">Live</b></div></div></article>
 
 <article class="card committee"><h3>AI INVESTMENT COMMITTEE</h3><div class="scenario"><div class="scenario-head"><b class="up">Bull case</b><span>25%</span></div><p>US-India trade deal signs before/around Jul 24; Hormuz tensions ease; Brent retreats toward $70.</p></div><div class="scenario"><div class="scenario-head"><b class="warn">Base case</b><span>50%</span></div><p>Banks/IT/auto earnings keep large-caps resilient while oil, Fed and tariff uncertainty cap upside.</p></div><div class="scenario"><div class="scenario-head"><b class="down">Bear case</b><span>25%</span></div><p>Hormuz disruption worsens, tariff deadline lapses without a deal, and Fed signals an actual 2026 hike.</p></div></article>
 
@@ -172,6 +172,21 @@ async function loadLiveData(){
       ).join('');
       anyLive=true;
     }
+    if(j.intelligence && isCurrentIntelligence(j) && Array.isArray(j.intelligence.risks)){
+  const riskBox=document.getElementById('liveRiskDashboard');
+
+  if(riskBox){
+    riskBox.innerHTML=j.intelligence.risks.map(r=>{
+      const cls=r.level==='High'?'down':r.level==='Elevated'?'warn':'up';
+      const value=Number.isFinite(Number(r.value))?' · '+Number(r.value).toFixed(2):'';
+
+      return `<div class="risk" title="${r.note||''}">
+        <span>${r.name}${value}</span>
+        <b class="${cls}">${r.level}</b>
+      </div>`;
+    }).join('');
+  }
+}
     snapLiveNote.textContent=j.updatedAtIST?('· backend updated '+j.updatedAtIST):'';
     liveBadge.textContent=anyLive?'Live data connected':'Backend reachable, no fields live yet';
     liveBadge.className=anyLive?'pill up':'pill warn';
