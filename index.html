@@ -19,14 +19,7 @@
 
 <article class="card" style="grid-column:span 12"><h3>LATEST HEADLINES <small class="muted tiny">— live via free RSS, once backend is connected</small></h3><div id="headlinesList" class="tiny muted">Connect the backend (see SETUP_GUIDE.md) to show live headlines here — until then this card stays empty rather than showing stale placeholder text.</div></article>
 
-<article class="card stories"><h3>TOP MARKET-MOVING STORIES</h3>
-<div class="story" onclick="openTopic('crude')"><div class="rank">1</div><div><b>US–Iran conflict keeps Brent near $78–79, Strait of Hormuz at risk</b><p>Oil-supply shock, not a demand shock — imported inflation and rupee are the transmission channel.</p></div><span class="tag down">Negative</span></div>
-<div class="story" onclick="openTopic('tariff')"><div class="rank">2</div><div><b>India–US tariff deadline: Jul 24, deal still unsigned</b><p>10% baseline tariff expires; Commerce Secretary calls framework "ready" but no signed text yet.</p></div><span class="tag warn">Watch</span></div>
-<div class="story" onclick="openTopic('banks')"><div class="rank">3</div><div><b>HDFC Bank &amp; ICICI Bank beat on Q1 FY27 earnings</b><p>ICICI profit +15.9% YoY, HDFC Bank +5% YoY — both released results Sat 18 Jul.</p></div><span class="tag up">Positive</span></div>
-<div class="story" onclick="openTopic('chips')"><div class="rank">4</div><div><b>Global AI/semiconductor selloff deepens, Fed turns hawkish</b><p>Micron -13% in a session; new Fed Chair Warsh signals more 2026 policymakers favour hikes.</p></div><span class="tag down">Negative</span></div>
-<div class="story" onclick="openTopic('china')"><div class="rank">5</div><div><b>China Q2 GDP growth forecast slows to ~4.5%</b><p>Markets watching for fresh stimulus — mixed read-through for metals demand.</p></div><span class="tag warn">Mixed</span></div>
-<div class="story" onclick="openTopic('resilience')"><div class="rank">6</div><div><b>Nifty/Sensex rally through the noise — earnings over macro</b><p>Sensex +965 pts, Nifty above 24,300 on Fri despite weak global cues and oil concerns.</p></div><span class="tag up">Positive</span></div>
-</article>
+<article class="card stories"><h3>TOP MARKET-MOVING STORIES</h3><div id="liveTopStories"><div class="story"><div class="rank">1</div><div><b>Loading current market-moving stories…</b><p>Updating from MarketMind live intelligence.</p></div><span class="tag warn">Live</span></div></div></article>
 
 <article class="card radar"><h3>INVESTMENT RADAR</h3><div class="barrow"><span>Private Banks</span><div class="bar"><span style="width:88%"></span></div><b>88</b></div><div class="barrow"><span>IT Services</span><div class="bar"><span style="width:79%"></span></div><b>79</b></div><div class="barrow"><span>Auto</span><div class="bar"><span style="width:74%"></span></div><b>74</b></div><div class="barrow"><span>Metals (China-linked)</span><div class="bar"><span style="width:52%"></span></div><b>52</b></div><div class="barrow"><span>EMS / AI-infra linked</span><div class="bar"><span style="width:41%"></span></div><b>41</b></div><div class="barrow"><span>OMCs / Aviation</span><div class="bar"><span style="width:31%"></span></div><b>31</b></div></article>
 
@@ -183,6 +176,25 @@ async function loadLiveData(){
       return `<div class="risk" title="${r.note||''}">
         <span>${r.name}${value}</span>
         <b class="${cls}">${r.level}</b>
+      </div>`;
+    }).join('');
+  }
+if(j.intelligence && isCurrentIntelligence(j) && Array.isArray(j.intelligence.topStories)){
+  const storiesBox=document.getElementById('liveTopStories');
+
+  if(storiesBox){
+    storiesBox.innerHTML=j.intelligence.topStories.map(s=>{
+      const safeTitle=s.title||'Market update';
+      const safeSource=s.source||'MarketMind';
+      const safeLink=s.link||'#';
+
+      return `<div class="story">
+        <div class="rank">${s.rank}</div>
+        <div>
+          <b><a href="${safeLink}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">${safeTitle}</a></b>
+          <p>${safeSource} · current news feed</p>
+        </div>
+        <span class="tag warn">Live</span>
       </div>`;
     }).join('');
   }
