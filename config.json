@@ -1,7 +1,7 @@
 {
   "mode": "hybrid",
   "timezone": "Asia/Kolkata",
-  "apiBase": "",
+  "apiBase": "https://marketmind-api.mginv22.workers.dev",
   "apiBaseNote": "Set this to your deployed Cloudflare Worker URL, e.g. https://marketmind-api.yoursubdomain.workers.dev — see SETUP_GUIDE.md. Leave blank to keep using static snapshot data only.",
   "refreshIntervalMinutes": 5,
   "live_connectors": {
