@@ -124,10 +124,7 @@ fx:{t:'USD/INR',s:'Live reference conversion',m:[['USD/INR','—','live'],['Oil 
 function ul(x){return '<ul>'+x.map(y=>'<li>'+y+'</li>').join('')+'</ul>'}
 function openTopic(k){let t=T[k]||T.crude;title.textContent=t.t;sub.textContent=t.s;updated.textContent='Updated '+new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});metrics.innerHTML=t.m.map(x=>`<div class="metric"><span>${x[0]}</span><b>${x[1]}</b><small class="muted">${x[2]}</small></div>`).join('');facts.innerHTML=ul(t.f);india.innerHTML=ul(t.i);affected.innerHTML=ul(t.a);ai.innerHTML=ul(t.ai);confbadge.textContent='evidence-based';watchnext.innerHTML=ul(t.w);sources.innerHTML=t.src.map(x=>`<div class="source"><a target="_blank" rel="noopener" href="${x[1]}">${x[0]}</a><small>Open ↗</small></div>`).join('');drawer.classList.add('open')}
 function closeDrawer(){drawer.classList.remove('open')}
-async function loadFX(){try{let r=await fetch('https://api.frankfurter.app/latest?from=USD&to=INR',{cache:'no-store'});let j=await r.json();fx.textContent=j.rates.INR.toFixed(2);fxs.textContent='ECB ref. '+j.date;T.fx.m[0][1]=j.rates.INR.toFixed(2)}catch(e){fx.textContent='~95.6';fxs.textContent='reported range, 17 Jul'}}
-function refreshAll(){loadFX();loadLiveData();date.textContent=new Date().toLocaleString()+' • refreshed'}
-date.textContent=new Date().toLocaleString()+' • snapshot as of 19 Jul 2026';loadFX();if('serviceWorker'in navigator)navigator.serviceWorker.register('./service-worker.js');
-
+date.textContent=new Date().toLocaleString();if('serviceWorker' in navigator)navigator.serviceWorker.register('./service-worker.js');
 /* ===== Live backend integration (Cloudflare Worker) ===== */
 let API_BASE='';
 async function loadConfig(){
