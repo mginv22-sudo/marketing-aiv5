@@ -13,15 +13,15 @@
 @media(max-width:980px){.app{grid-template-columns:1fr}.side{display:none}main{padding:16px 14px}.bias,.snap,.stories,.radar,.sectors,.risks,.committee,.watch,.events{grid-column:span 12}.kpis{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.story{grid-template-columns:24px 1fr}.tag{display:none}.metrics{grid-template-columns:1fr 1fr}}
 </style></head><body><div class="app"><aside class="side"><div class="brand"><div class="logo">M</div><div><b>MarketMind AI</b><small>News Intelligence + Portfolio v5</small></div></div><div class="nav"><button class="active">◉ Overview</button><button>⌁ Investment Radar</button><button>▤ News Intelligence</button><button>◇ Opportunities</button><button>⚠ Risk Dashboard</button><button>▦ Sectors</button><button>★ Watchlist</button></div></aside><main><div class="top"><div><h1>Global → India Read-Through</h1><p id="date"></p><span id="liveBadge" class="pill warn" style="margin-top:4px;display:inline-block">Checking backend…</span></div><button class="btn" onclick="refreshAll()">↻ Refresh</button></div><section class="grid">
 
-<article class="card bias"><h3>MARKET BIAS</h3><span class="score">58</span> <b class="warn">Neutral, tilting cautious</b><div class="meter"><span style="width:58%"></span></div><p class="tiny muted">Strong Q1 FY27 bank earnings and IT/rupee tailwinds are offsetting a genuine external shock — elevated crude, a hawkish Fed and an unresolved US tariff deadline on Jul 24.</p></article>
+<article class="card bias"><h3>MARKET BIAS</h3><span id="marketBiasScore" class="score">--</span> <b id="marketBiasLabel" class="warn">Updating...</b><div class="meter"><span id="marketBiasMeter" style="width:50%"></span></div><p id="marketBiasText" class="tiny muted">Calculating current bias from live market and macro signals.</p></article>
 
-<article class="card snap"><h3>MARKET SNAPSHOT · as of Fri 17 Jul close <small id="snapLiveNote" class="muted tiny"></small></h3><div class="kpis"><div class="kpi" onclick="openTopic('nifty')"><span>NIFTY 50</span><b id="niftyVal">24,334</b><small id="niftyDelta" class="up">+1.09% · tap for detail</small></div><div class="kpi" onclick="openTopic('sensex')"><span>SENSEX</span><b>78,151</b><small class="up">+1.25% · tap for detail</small></div><div class="kpi" onclick="openTopic('fx')"><span>USD/INR</span><b id="fx">Loading…</b><small id="fxs" class="muted">live reference</small></div><div class="kpi" onclick="openTopic('crude')"><span>BRENT CRUDE</span><b id="brentVal">~$78</b><small id="brentDelta" class="down">tap for latest info</small></div></div></article>
+<article class="card snap"><h3>MARKET SNAPSHOT <small id="snapLiveNote" class="muted tiny"></small></h3><div class="kpis"><div class="kpi"><span>NIFTY 50</span><b id="niftyVal">Loading...</b><small id="niftyDelta">live via FYERS</small></div><div class="kpi"><span>USD/INR</span><b id="usdinrVal">Loading...</b><small id="usdinrDelta">live reference</small></div><div class="kpi"><span>US 10Y</span><b id="us10yVal">Loading...</b><small id="us10yDelta">live via FRED</small></div><div class="kpi"><span>BRENT CRUDE</span><b id="brentVal">Loading...</b><small id="brentDelta">live via EIA</small></div></div></article>
 
 <article class="card" style="grid-column:span 12"><h3>LATEST HEADLINES <small class="muted tiny">— live via free RSS, once backend is connected</small></h3><div id="headlinesList" class="tiny muted">Connect the backend (see SETUP_GUIDE.md) to show live headlines here — until then this card stays empty rather than showing stale placeholder text.</div></article>
 
 <article class="card stories"><h3>TOP MARKET-MOVING STORIES</h3><div id="liveTopStories"><div class="story"><div class="rank">1</div><div><b>Loading current market-moving stories…</b><p>Updating from MarketMind live intelligence.</p></div><span class="tag warn">Live</span></div></div></article>
 
-<article class="card radar"><h3>INVESTMENT RADAR</h3><div class="barrow"><span>Private Banks</span><div class="bar"><span style="width:88%"></span></div><b>88</b></div><div class="barrow"><span>IT Services</span><div class="bar"><span style="width:79%"></span></div><b>79</b></div><div class="barrow"><span>Auto</span><div class="bar"><span style="width:74%"></span></div><b>74</b></div><div class="barrow"><span>Metals (China-linked)</span><div class="bar"><span style="width:52%"></span></div><b>52</b></div><div class="barrow"><span>EMS / AI-infra linked</span><div class="bar"><span style="width:41%"></span></div><b>41</b></div><div class="barrow"><span>OMCs / Aviation</span><div class="bar"><span style="width:31%"></span></div><b>31</b></div></article>
+<article class="card radar"><h3>INVESTMENT RADAR</h3><div id="liveInvestmentRadar"><div class="tiny muted">Building radar from current sector momentum and macro conditions…</div></div></article>
 
 <article class="card sectors"><h3>SECTOR RANKING</h3><div id="liveSectorRanking"><div class="tiny muted">Calculating current sector signals…</div></div></article>
 
@@ -29,11 +29,11 @@
 
 <article class="card committee"><h3>AI INVESTMENT COMMITTEE</h3><div id="liveCommittee"><div class="scenario"><div class="scenario-head"><b class="warn">Updating current scenarios…</b><span>Live</span></div><p>Building scenarios from current market and macro risk signals.</p></div></div></article>
 
-<article class="card watch"><h3>WATCHLIST INTELLIGENCE · your holdings</h3><table><tr><th>Company</th><th>This week's thesis</th><th>Signal</th></tr><tr onclick="openTopic('icici')"><td>ICICI Bank</td><td>Q1 FY27 profit +15.9% YoY, advances +19.6%</td><td class="up">Strengthening</td></tr><tr onclick="openTopic('hdfcb')"><td>HDFC Bank</td><td>Profit +5%, but NIM at record-low 3.26%</td><td class="warn">Mixed</td></tr><tr onclick="openTopic('recltd')"><td>RECLTD / PFC</td><td>Rising G-Sec yields + merger swap-ratio overhang</td><td class="warn">Watch</td></tr><tr onclick="openTopic('cgpower')"><td>CG Power / TD Power</td><td>Capex-cycle names — read-through from global chip selloff</td><td class="warn">Valuation watch</td></tr></table></article>
+<art<article class="card watch"><h3>WATCHLIST INTELLIGENCE · your holdings</h3><div id="liveWatchlist"><div class="tiny muted">Building current intelligence from your holdings, market data and news…</div></div></article>
 
 <article class="card events"><h3>MACRO CALENDAR — CURRENT CATALYSTS</h3><div id="liveMacroCalendar"><div class="event"><time>Live</time><div><b>Updating upcoming catalysts…</b><p>Current macro and market events will appear here.</p></div></div></div></article>
 
-<article class="card" style="grid-column:span 12"><h3>RESULTS CALENDAR — Q1 FY27</h3><table id="resultsTable"></table><p class="tiny muted" style="margin-top:10px">★ = a stock you hold (edit your holdings below to personalise this). Dates marked TBD had not been formally announced by the company as of this snapshot.</p></article>
+<article <article class="card events" style="grid-column:span 12"><h3>RESULTS CALENDAR</h3><div id="liveResultsCalendar"><div class="tiny muted">Updating current and upcoming company results…</div></div></article>
 
 <article class="card" style="grid-column:span 12"><h3>MY PORTFOLIO <button class="btn" style="float:right;font-size:11px;padding:7px 11px" onclick="toggleAddForm()">+ Add holding</button></h3>
 <p class="tiny muted">Add your holdings once — they're saved in this browser (not sent anywhere) and used below to work out how each story actually affects <i>your</i> portfolio, not just the stock price.</p>
@@ -54,68 +54,7 @@
 <div id="drawer" class="drawer" onclick="if(event.target===this)closeDrawer()"><div class="panel"><div class="paneltop"><div><h2 id="title">Topic</h2><p id="sub" class="muted tiny"></p><small id="updated" class="muted"></small></div><button class="btn" onclick="closeDrawer()">✕</button></div><div id="metrics" class="metrics"></div><div class="section"><h4>CONFIRMED FACTS</h4><div id="facts"></div></div><div class="section"><h4>WHY IT MATTERS FOR INDIA</h4><div id="india"></div></div><div class="section"><h4>AFFECTED SECTORS / STOCKS</h4><div id="affected"></div></div><div class="section"><h4>AI INTERPRETATION <span class="conf" id="confbadge"></span></h4><div id="ai"></div></div><div class="section"><h4>WHAT TO WATCH NEXT</h4><div id="watchnext"></div></div><div class="section"><h4>SOURCES</h4><div id="sources"></div></div></div></div>
 
 <script>
-const T={
-crude:{t:'US–Iran Conflict & Crude Oil',s:'Strait of Hormuz risk premium',m:[['Brent','~$78–79','as of 17 Jul'],['Weekly move','+~5–6%','on Hormuz risk'],['India impact','High','negative']],
-f:['Renewed US–Iran military exchanges reignited fears over the Strait of Hormuz, a route for roughly a fifth of global seaborne oil trade.','Brent traded in a $72–79 range over the past two weeks, spiking on each escalation headline and partly retracing on ceasefire/talks news.','Indian equities fell over 700 points intraday on 13 Jul on the escalation before a partial recovery.'],
-i:['Higher crude widens India\u2019s import bill and current account deficit, and feeds into inflation and rupee weakness.','It is a genuine external/geopolitical shock rather than a domestic demand or earnings problem — RBI\u2019s FY27 CPI projection was already revised up to 5.1% partly for this reason.'],
-a:['Negative: BPCL, HPCL, IOC (OMCs), IndiGo/aviation, paints, tyres, chemicals.','Positive: ONGC, Oil India (upstream).','Mixed: Reliance Industries (O2C margins vs. crude cost).'],
-ai:['Base case: crude sustaining above $75 remains a headwind for market breadth and the rupee through Q2 FY27, even as large-cap earnings offset it for now.','This is treated as a supply-shock scenario, not a demand-destruction one — the two have different sector implications.'],
-w:['Whether Hormuz shipping normalises or a wider blockade is attempted.','Brent sustaining above $80 vs. retreating toward $70.','USD/INR and RBI intervention signals.'],
-src:[['Trading Economics — Brent Crude','https://tradingeconomics.com/commodity/brent-crude-oil'],['Sunday Guardian — market wrap 13 Jul','https://sundayguardianlive.com/business/sensex-today-july-13-2026-sensex-today-july-13-2026-sensex-recovers-after-600-point-gap-down-opening-nifty-trades-below-24200-as-markets-remain-in-the-red-235430/'],['Investing.com — Brent futures','https://www.investing.com/commodities/brent-oil']]},
 
-tariff:{t:'India–US Tariff Deadline (24 Jul)',s:'Trade negotiations status',m:[['Current baseline','10%','Section 122, expiring ~24 Jul'],['Prior IEEPA rate','18%','struck down by SCOTUS, Feb 2026'],['Deal status','Unsigned','"last 1%" per negotiators']],
-f:['A Supreme Court ruling in Feb 2026 struck down the earlier IEEPA-based reciprocal tariffs (which had reached 50% on India in 2025); a flat 10% Section 122 tariff took their place, applied to most countries.','That 10% Section 122 tariff is scheduled to expire around 24 Jul 2026 absent further action.','India\u2019s Commerce Secretary said on 13 Jul that trade-deal negotiations are "progressing very well" and a framework is "ready", but declined to give a signing timeline — no text has been published.','Sector-specific Section 232 tariffs on steel/aluminium (up to 50%) are separate and continue regardless of this deadline.'],
-i:['A signed deal or extension would remove a real overhang for export-linked sectors; a lapse without a deal could reintroduce a higher, uncertain rate for a period.','This is a binary, date-specific catalyst rather than a slow-moving trend — worth tracking day-by-day into 24 Jul.'],
-a:['Export-sensitive: IT services, pharma (generics, ~10% currently), textiles, gems & jewellery, auto components.','Largely insulated: domestic-focused banks, FMCG, utilities.'],
-ai:['Base case: some form of extension or a partial/interim signing is more likely than a clean lapse, given both sides have repeatedly described the deal as near-complete.','Confidence is moderate — repeated "almost signed" framing over several months has not yet converted into a published text, so timeline slippage is a real risk.'],
-w:['Any officially published deal text or executive order before/around 24 Jul.','Statements from Commerce Secretary Agarwal or USTR in the days immediately before the deadline.'],
-src:[['Business Today — Commerce Secretary comments, 13 Jul','https://www.businesstoday.in/latest/economy/story/india-us-negotiations-on-trade-deal-progressing-well-framework-deal-is-ready-commerce-secretary-542622-2026-07-13'],['TariffsTool — Section 122 India rate tracker','https://www.tariffstool.com/tariffs-from-india'],['Blitz India Media — deadline tracker','https://blitzindiamedia.com/news/india-us-trade-agreement-july-2026/']]},
-
-banks:{t:'HDFC Bank & ICICI Bank Q1 FY27',s:'Results announced 18 Jul 2026',m:[['ICICI net profit','₹14,804.5 cr','+15.9% YoY'],['HDFC Bank net profit','₹19,060 cr','+5% YoY'],['HDFC Bank NIM','3.26%','record low']],
-f:['ICICI Bank standalone net profit rose 15.9% YoY to ₹14,804.5 crore; advances grew 19.6% YoY to ₹16.31 trillion; net NPA improved to 0.35%.','HDFC Bank standalone net profit rose 5% YoY to ₹19,060 crore; NII grew ~7%; net interest margin narrowed to 3.26%, its lowest recorded level, as cost of funds held steady while asset yields dipped slightly.','Both banks reported on the same day (18 Jul), inviting direct comparison on margins, loan growth and asset quality.'],
-i:['Financials carry the heaviest index weight in Nifty/Sensex — resilient bank earnings are a key reason the market shrugged off oil/Fed/tariff worries on 17 Jul.','ICICI\u2019s combination of faster growth and better margins reads stronger than HDFC Bank\u2019s this quarter, though HDFC Bank\u2019s book is far larger.'],
-a:['Direct: ICICI Bank, HDFC Bank, and by extension Kotak Mahindra Bank, Axis Bank (reported 17 Jul), which round out the private-bank comparison set.'],
-ai:['This is a fact-based positive for your ICICI Bank holding specifically — profit growth and credit growth both accelerated.','For HDFC Bank, the headline profit beat masks a genuine margin compression trend worth monitoring over the next 1–2 quarters, not just a one-off.'],
-w:['Management commentary/analyst calls on NIM trajectory and deposit cost for HDFC Bank.','Kotak Mahindra Bank and Axis Bank Q1 numbers for a fuller sector picture.'],
-src:[['Business Standard — HDFC Bank Q1FY27','https://www.business-standard.com/companies/quarterly-results/hdfc-bank-q1fy27-results-net-profit-rises-5-to-19-060-cr-nii-grows-7-126071800598_1.html'],['Business Standard — ICICI Bank Q1FY27','https://www.business-standard.com/companies/quarterly-results/icici-bank-s-q1fy27-standalone-profit-rises-15-9-to-rs-14-804-cr-126071800665_1.html']]},
-
-chips:{t:'Global Semiconductor / AI Selloff',s:'Fed turns more hawkish under new Chair',m:[['Micron single-day move','-13%','one session, Jul 2026'],['US 10Y Treasury','~4.48–4.57%','elevated'],['Fed hawks','9 of 18','vs. 0 in March']],
-f:['A July 2026 selloff hit AI/semiconductor names — Micron fell about 13% in a single session (~$138bn market value), Intel and AMD also fell sharply, alongside a steep drop in the VanEck Semiconductor ETF.','SK Hynix reportedly delayed part of its HBM4 memory expansion in favour of DDR5 production, which markets read as a signal that AI-driven memory demand assumptions may be too optimistic.','Under new Fed Chair Kevin Warsh, the Fed has turned more hawkish — reports indicate nine of eighteen policymakers now favour rate hikes in 2026, versus none in March.','The US 10-year Treasury yield has risen to around 4.48–4.57%, raising discount rates on high-multiple growth/tech names.'],
-i:['This is primarily a global sentiment and valuation-multiple story, not an India-specific one — but Indian EMS/electronics names trade as a high-beta proxy on global AI capex sentiment.','A firmer Fed also supports a stronger dollar, an incremental headwind for the rupee on top of the crude-driven pressure already in play.'],
-a:['India EMS/electronics: Dixon Technologies, Kaynes Technology, Syrma SGS, Netweb Technologies — these can de-rate on global AI multiple compression even without a change in their own order books.','CG Power and TD Power Systems have capex-cycle exposure that is more domestic-demand-driven, but can still see sentiment spillover.'],
-ai:['Near-term read: this looks like a valuation/positioning correction after a very strong run, rather than confirmed evidence of an AI demand collapse — but the SK Hynix capex signal is a genuine data point worth tracking, not just noise.','Confidence is moderate; this theme is evolving week to week.'],
-w:['Hyperscaler capex guidance in upcoming US tech earnings.','Samsung and SK Hynix full quarterly results and management commentary on memory demand.','Whether the 28–29 Jul FOMC meeting confirms or walks back the hawkish tilt.'],
-src:[['Intellectia — AI chip selloff, Jul 2026','https://intellectia.ai/blog/ai-chip-stocks-valuation-concerns-july-2026'],['Intellectia — HBM4/SK Hynix selloff','https://intellectia.ai/blog/ai-chip-stocks-july-2026-selloff'],['Intellectia — market rotation, Jul 2026','https://intellectia.ai/blog/ai-trade-cracks-chip-stocks-july-2026']]},
-
-china:{t:'China Growth Slowdown & Stimulus Watch',s:'Q2 GDP forecasts soften',m:[['Q2 GDP forecast','~4.5%','slowing'],['Policy stance','Targeted support','no broad stimulus yet'],['India impact','Mixed','metals-sensitive']],
-f:['Forecasts for China\u2019s Q2 2026 GDP growth have softened to around 4.5%, below earlier expectations.','Chinese policymakers have so far favoured targeted, sector-specific support (e.g. property "white-list" financing) over a broad stimulus package.','Markets are watching for signs of a fresh, larger stimulus announcement given the growth slowdown.'],
-i:['China is the largest global consumer of industrial metals — its demand trajectory is a key swing factor for Indian metals producers and, indirectly, capital-goods names with export exposure.','Historically, stimulus headlines move metals prices faster than actual physical demand catches up, so rallies on announcement news can be ahead of fundamentals.'],
-a:['Tata Steel, Hindalco, Vedanta, NALCO, and industrial chemicals names with China-linked demand or pricing.'],
-ai:['Base case: without a confirmed broad stimulus, the upside case for industrial metals from a China recovery remains speculative rather than confirmed.','This is a slower-moving, monitor-not-react theme compared to the crude or tariff stories.'],
-w:['Any formal broad stimulus announcement from Beijing.','China\u2019s official Q2 GDP print and PBOC/NBS commentary.'],
-src:[['HokaNews — China Q2 GDP slowdown','https://www.hokanews.com/2026/07/markets-eye-new-china-stimulus-as-q2.html'],['Capital Economics — China stimulus vs. metals','https://www.capitaleconomics.com/publications/commodities-weekly/china-stimulus-silver-bullet-metals-think-again']]},
-
-resilience:{t:'Nifty/Sensex Rally Despite Global Noise',s:'Friday 17 Jul close',m:[['Sensex','78,151.45','+964.58 pts / +1.25%'],['Nifty 50','24,334.30','+261.55 pts / +1.09%'],['Breadth','Narrow','1,632 up vs 2,419 down']],
-f:['Sensex and Nifty both rallied sharply on 17 Jul — Sensex +964.58 points (1.25%) to 78,151.45, Nifty +261.55 points (1.09%) to 24,334.30 — despite weak global cues and elevated crude.','Gains were concentrated in IT, banking and auto; market breadth was narrow, with more decliners than advancers overall.','The rally was attributed to strong Q1 FY27 earnings momentum (bank results, positive pre-quarter updates from Reliance) rather than an improvement in the external backdrop.'],
-i:['This is an important nuance for your macro read: index-level strength right now is a large-cap, earnings-driven phenomenon, not a broad-based risk-on move — the narrow breadth is the tell.','It suggests the market is currently pricing "earnings offset macro risk", which is exactly the base case in the AI Investment Committee view above.'],
-a:['Beneficiaries: index heavyweights in IT, private banks, autos.','Laggards: pharma (Dr Reddy\u2019s, Sun Pharma), metals — both down on the day even as the index rallied.'],
-ai:['This kind of narrow-breadth, index-led rally can reverse quickly if any one of the earnings catalysts disappoints — worth treating current index levels with some caution rather than reading them as broad market health.'],
-w:['Whether broader-market participation (midcap/smallcap) improves as more Q1 results come in.','Reliance Industries Q1 FY27 results, still pending as of this snapshot.'],
-src:[['HDFCSky — market close report 17 Jul','https://hdfcsky.com/news/stock-market-close-july-17-2026-sensex-nifty-rally'],['Business Standard — market close 17 Jul','https://www.business-standard.com/markets/news/stock-market-live-july-17-nse-bse-sensex-today-nifty-gift-nifty-us-iran-tension-brent-crude-prices-ipo-it-stocks-q1-results-today-126071700088_1.html']]},
-
-icici:{t:'ICICI Bank',s:'Q1 FY27 result detail',m:[['Net profit','₹14,804.5 cr','+15.9% YoY'],['Advances','₹16.31 tn','+19.6% YoY'],['Net NPA','0.35%','improved YoY']],f:['Standalone net profit rose 15.9% YoY (8% QoQ) to ₹14,804.5 crore.','Advances grew 19.6% YoY to ₹16.31 trillion; deposits grew 14% YoY to ₹18.33 trillion.','Provisions fell 30.5% YoY.'],i:['A core holding in your portfolio showing broad-based strength this quarter — growth and credit quality both improved together.'],a:['ICICI Bank directly; read-across for sector peers reporting later.'],ai:['This is a straightforwardly positive print with no obvious red flags in the disclosed numbers.'],w:['Management commentary on FY27 credit growth guidance.'],src:[['Business Standard — ICICI Bank Q1FY27','https://www.business-standard.com/companies/quarterly-results/icici-bank-s-q1fy27-standalone-profit-rises-15-9-to-rs-14-804-cr-126071800665_1.html']]},
-
-hdfcb:{t:'HDFC Bank',s:'Q1 FY27 result detail',m:[['Net profit','₹19,060 cr','+5% YoY'],['NIM','3.26%','record low'],['Gross advances','₹30.61 tn','+15.4% YoY']],f:['Net profit rose 5% YoY to ₹19,060 crore; prior-year quarter included a one-time OFS gain from HDB Financial Services\u2019 IPO, so the comparison is not fully like-for-like.','Net interest margin narrowed to 3.26% from 3.38% in Q4 FY26, its lowest recorded level.','Gross NPA edged up to 1.17% from 1.15% sequentially; provisions rose to ₹3,060 crore from ₹2,609 crore QoQ.'],i:['The margin compression is the more important underlying trend to watch versus the headline profit number, which is flattered by a soft year-ago base.'],a:['HDFC Bank directly.'],ai:['Read this as a mixed, not purely positive, print — worth tracking NIM trajectory over the next 1–2 quarters before drawing conclusions.'],w:['Whether NIM stabilises or continues to compress in Q2 FY27.'],src:[['Business Standard — HDFC Bank Q1FY27','https://www.business-standard.com/companies/quarterly-results/hdfc-bank-q1fy27-results-net-profit-rises-5-to-19-060-cr-nii-grows-7-126071800598_1.html']]},
-
-recltd:{t:'RECLTD / PFC',s:'Rate-sensitivity + merger overhang',m:[['India 10Y G-Sec','~6.76%','rose this week'],['Driver','Crude + US 10Y','Hormuz-linked'],['Overhang','PFC-REC merger','swap ratio risk']],f:['India\u2019s 10-year G-Sec yield rose this week on renewed Hormuz tensions and a firmer US 10-year Treasury, reversing part of a multi-week decline.','This sits alongside your already-flagged PFC-REC merger swap-ratio risk as a separate, ongoing overhang on RECLTD specifically.'],i:['Rising bond yields are a mild funding-cost and valuation headwind for NBFC/PSU-lender names generally — not specific to RECLTD, but relevant given your position.'],a:['RECLTD, PFC directly; other NBFCs more broadly.'],ai:['This is a background, macro-level watch item rather than a new company-specific development — the merger swap-ratio question remains the bigger single-name risk.'],w:['G-Sec yield direction as crude stabilises or escalates further.','Any fresh PFC-REC merger updates.'],src:[['Trading Economics — India 10Y yield','https://tradingeconomics.com/india/government-bond-yield']]},
-
-cgpower:{t:'CG Power / TD Power Systems',s:'Capex-cycle names — global read-through',m:[['Sector score','78 (Capital Goods)','SDS Investment Radar'],['Global chip cycle','Selloff','sentiment risk'],['Domestic capex','Still supportive','India-specific']],f:['The global AI/semiconductor selloff (Micron, Intel, AMD, SK Hynix) is a global sentiment/valuation story, distinct from India\u2019s own domestic capex cycle in power equipment and capital goods.','Your Capital Goods/domestic capex thesis for CG Power and TD Power is driven by India-specific order books and power-sector investment, not by global chip valuations.'],i:['Read the two as separate stories: don\u2019t let global EMS/semiconductor sentiment automatically colour your read on India-domestic capital goods names, even though they can move together in a broad risk-off tape.'],a:['CG Power, TD Power Systems — domestic order-book and execution matter more here than global AI capex headlines.'],ai:['This is more a caution against conflating two different narratives than a specific new signal on either stock.'],w:['CG Power / TD Power order-book updates and Q1 FY27 results when due.'],src:[['Intellectia — AI chip selloff context','https://intellectia.ai/blog/ai-chip-stocks-valuation-concerns-july-2026']]},
-
-fx:{t:'USD/INR',s:'Live reference conversion',m:[['USD/INR','—','live'],['Oil sensitivity','High','negative for INR'],['Exporters','Positive','IT/pharma']],f:['MarketMind attempts to retrieve a live ECB-based reference rate via Frankfurter.','Independently, market reports put USD/INR around ₹95.3–95.7 in mid-July 2026, with the rupee under pressure from the crude spike and a firmer dollar on hawkish Fed signals.'],i:['A weaker rupee helps IT/pharma exporters on translation but raises the cost of crude and other imports — a genuine two-sided effect this week given both drivers are active simultaneously.'],a:['Positive: IT services, pharma exporters.','Negative: OMCs, aviation, electronics/gold importers.'],ai:['Crude and Fed hawkishness are reinforcing each other on the rupee right now, rather than offsetting — worth flagging as a compounding risk, not two independent ones.'],w:['RBI intervention signals, crude direction, and the 28–29 Jul FOMC outcome.'],src:[['Frankfurter (live FX reference)','https://www.frankfurter.app/'],['Wealth North — market wrap 10 Jul','https://wealthnorth.in/blogs/market-wrap/market-wrap-daily-2026-07-10']]}
-};
-['nifty','sensex'].forEach(k=>T[k]=T.resilience);
-function ul(x){return '<ul>'+x.map(y=>'<li>'+y+'</li>').join('')+'</ul>'}
-function openTopic(k){let t=T[k]||T.crude;title.textContent=t.t;sub.textContent=t.s;updated.textContent='Updated '+new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});metrics.innerHTML=t.m.map(x=>`<div class="metric"><span>${x[0]}</span><b>${x[1]}</b><small class="muted">${x[2]}</small></div>`).join('');facts.innerHTML=ul(t.f);india.innerHTML=ul(t.i);affected.innerHTML=ul(t.a);ai.innerHTML=ul(t.ai);confbadge.textContent='evidence-based';watchnext.innerHTML=ul(t.w);sources.innerHTML=t.src.map(x=>`<div class="source"><a target="_blank" rel="noopener" href="${x[1]}">${x[0]}</a><small>Open ↗</small></div>`).join('');drawer.classList.add('open')}
 function closeDrawer(){drawer.classList.remove('open')}
 date.textContent=new Date().toLocaleString();if('serviceWorker' in navigator)navigator.serviceWorker.register('./service-worker.js');
 /* ===== Live backend integration (Cloudflare Worker) ===== */
@@ -146,7 +85,14 @@ async function loadLiveData(){
         niftyDelta.className=chg>=0?'up':'down';
         anyLive=true;
       }
-    }
+    if(j.market.usdinr && !j.market.usdinr.error){
+  usdinrVal.textContent=Number(j.market.usdinr.price).toFixed(2);
+ if(j.macro.us10y && !j.macro.us10y.error){
+  us10yVal.textContent=Number(j.macro.us10y.value).toFixed(2)+'%';
+  us10yDelta.textContent='live via FRED · '+j.macro.us10y.date;
+  anyLive=true;
+}
+}
     if(j.macro){
   if(j.macro.us10y && !j.macro.us10y.error){
     T.chips.m[1]=['US 10Y Treasury',j.macro.us10y.value+'%','live, '+j.macro.us10y.date];
@@ -165,7 +111,35 @@ async function loadLiveData(){
       ).join('');
       anyLive=true;
     }
-    if(j.intelligence && isCurrentIntelligence(j) && Array.isArray(j.intelligence.risks)){
+  if(j.intelligence && isCurrentIntelligence(j)){
+  const biasScore=document.getElementById('marketBiasScore');
+  const biasLabel=document.getElementById('marketBiasLabel');
+  const biasMeter=document.getElementById('marketBiasMeter');
+  const biasText=document.getElementById('marketBiasText');
+
+  const regime=j.intelligence.regime||'Balanced';
+  const tone=j.intelligence.market?.tone||'Neutral';
+  const niftyChange=Number(j.intelligence.market?.niftyChange||0);
+  const riskCount=Number(j.intelligence.summary?.elevatedRiskCount||0);
+
+  let score=50+(niftyChange*10)-(riskCount*7);
+  score=Math.max(0,Math.min(100,Math.round(score)));
+
+  let cls='warn';
+  if(score>=60) cls='up';
+  else if(score<=40) cls='down';
+
+  if(biasScore) biasScore.textContent=score;
+  if(biasLabel){
+    biasLabel.textContent=regime;
+    biasLabel.className=cls;
+  }
+  if(biasMeter) biasMeter.style.width=score+'%';
+  if(biasText){
+    biasText.textContent=tone+' market tone · '+riskCount+' elevated/high macro risk signals · live MarketMind assessment';
+  }
+} 
+      if(j.intelligence && isCurrentIntelligence(j) && Array.isArray(j.intelligence.risks)){
   const riskBox=document.getElementById('liveRiskDashboard');
 
   if(riskBox){
@@ -198,7 +172,80 @@ if(j.intelligence && isCurrentIntelligence(j) && Array.isArray(j.intelligence.se
     </table>`;
   }
 }
-      if(j.intelligence && isCurrentIntelligence(j) && Array.isArray(j.intelligence.topStories)){
+if(j.intelligence && isCurrentIntelligence(j) && Array.isArray(j.intelligence.sectorRanking)){
+  const radarBox=document.getElementById('liveInvestmentRadar');
+
+  if(radarBox){
+    const sectors=j.intelligence.sectorRanking.slice(0,6);
+
+    radarBox.innerHTML=sectors.map(s=>{
+      const chg=Number(s.change);
+      const cls=chg>0?'up':chg<0?'down':'warn';
+      const sign=chg>0?'+':'';
+
+      let signal='Neutral';
+      if(chg>=1) signal='Strong momentum';
+      else if(chg>=0.25) signal='Positive momentum';
+      else if(chg<=-1) signal='Weak momentum';
+      else if(chg<=-0.25) signal='Negative momentum';
+
+      const width=Math.min(100,Math.max(8,50+(chg*25)));
+
+      return `<div class="barrow">
+        <span>${s.sector}</span>
+        <div class="bar"><span style="width:${width}%"></span></div>
+        <b class="${cls}">${sign}${chg.toFixed(2)}%</b>
+        <small class="${cls}">${signal}</small>
+      </div>`;
+    }).join('');
+  }
+}}
+      if(j.intelligence && isCurrentIntelligence(j)){
+  const watchBox=document.getElementById('liveWatchlist');
+
+  if(watchBox){
+    const holdings=loadHoldings();
+
+    if(!holdings.length){
+      watchBox.innerHTML='<div class="tiny muted">No holdings added yet. Add holdings below to activate portfolio-specific intelligence.</div>';
+    }else{
+      const news=Array.isArray(j.headlines)?j.headlines.filter(h=>h && h.title):[];
+
+      watchBox.innerHTML=`<table>
+        <tr>
+          <th>Holding</th>
+          <th>Current news intelligence</th>
+          <th>Signal</th>
+        </tr>
+        ${holdings.map(h=>{
+          const ticker=(h.tk||'').toUpperCase();
+
+          const matches=news.filter(n=>{
+            const title=(n.title||'').toUpperCase();
+            return ticker.length>=3 && title.includes(ticker);
+          }).slice(0,2);
+
+          if(matches.length){
+            const titles=matches.map(n=>n.title).join(' · ');
+
+            return `<tr>
+              <td>${ticker}</td>
+              <td>${titles}</td>
+              <td class="warn">News detected</td>
+            </tr>`;
+          }
+
+          return `<tr>
+            <td>${ticker}</td>
+            <td>No directly matched current headline in the live feed.</td>
+            <td class="muted">Monitor</td>
+          </tr>`;
+        }).join('')}
+      </table>`;
+    }
+  }
+}
+  if(j.intelligence && isCurrentIntelligence(j) && Array.isArray(j.intelligence.topStories)){
   const storiesBox=document.getElementById('liveTopStories');
 
   if(storiesBox){
@@ -287,33 +334,7 @@ function isCurrentIntelligence(j){
 loadConfig().then(loadLiveData);
 setInterval(()=>{ if(API_BASE) loadLiveData(); }, 5*60*1000);
 
-/* ===== Results Calendar ===== */
-const RESULTS=[
-{c:'HCLTech',d:'13 Jul',s:'Reported',hold:false},
-{c:'Axis Bank',d:'17 Jul',s:'Reported',hold:false},
-{c:'Reliance Industries',d:'17 Jul',s:'Reported — profit -22.4% YoY (one-off gain last year), revenue +25.4%',hold:false},
-{c:'HDFC Bank',d:'18 Jul',s:'Reported — profit +5% YoY, NIM at record low 3.26%',hold:true,tk:'HDFCBANK'},
-{c:'ICICI Bank',d:'18 Jul',s:'Reported — profit +15.9% YoY, advances +19.6%',hold:true,tk:'ICICIBANK'},
-{c:'Kotak Mahindra Bank',d:'18 Jul',s:'Reported',hold:true,tk:'KOTAKBANK'},
-{c:'CG Power',d:'24 Jul',s:'Upcoming — earnings call scheduled',hold:true,tk:'CGPOWER'},
-{c:'Bajaj Finance',d:'30 Jul',s:'Upcoming — earnings call scheduled',hold:true,tk:'BAJFINANCE'},
-{c:'ITC',d:'Late Jul–Aug (TBD)',s:'Upcoming — exact date not yet announced',hold:true,tk:'ITC'},
-{c:'Hindustan Unilever',d:'Late Jul (TBD)',s:'Upcoming — exact date not yet announced',hold:true,tk:'HUL'},
-{c:'Cholamandalam Fin. Holdings',d:'Jul–Aug (TBD)',s:'Upcoming — exact date not yet announced',hold:true,tk:'CHOLAHLDNG'},
-{c:'Power Grid Corp',d:'TBD',s:'Upcoming — date not yet announced',hold:true,tk:'POWERGRID'},
-{c:'PFC',d:'TBD',s:'Upcoming — date not yet announced',hold:true,tk:'PFC'},
-{c:'REC Ltd',d:'TBD',s:'Upcoming — date not yet announced',hold:true,tk:'RECLTD'},
-{c:'Canara Bank',d:'TBD',s:'Upcoming — date not yet announced',hold:true,tk:'CANBK'},
-{c:'TD Power Systems',d:'TBD',s:'Upcoming — date not yet announced',hold:true,tk:'TDPOWERSYS'},
-{c:'Bajaj Housing Finance',d:'TBD',s:'Upcoming — date not yet announced',hold:true,tk:'BAJAJHFL'},
-{c:'Varun Beverages',d:'TBD',s:'Upcoming — date not yet announced',hold:true,tk:'VBL'}
-];
-function renderResults(){
-  resultsTable.innerHTML='<tr><th>Company</th><th>Date</th><th>Status</th></tr>'+RESULTS.map(r=>
-    `<tr><td>${r.c}${r.hold?'<span class="hold-tag">★ holding</span>':''}</td><td>${r.d}</td><td class="tiny">${r.s}</td></tr>`
-  ).join('');
-}
-renderResults();
+
 
 /* ===== Portfolio storage ===== */
 function loadHoldings(){try{return JSON.parse(localStorage.getItem('mm_holdings')||'[]')}catch(e){return[]}}
@@ -333,18 +354,6 @@ function addHolding(){
 }
 function removeHolding(i){const h=loadHoldings();h.splice(i,1);saveHoldings(h);renderHoldings()}
 
-/* ===== Exposure map: how each story touches specific tickers =====
-   Weights are an AI heuristic on a -3..+3 scale, not a precise valuation model. */
-const EXPOSURE={
-  crude:{}, // no direct oil-import-sensitive holdings by default
-  tariff:{}, // no direct IT/export-pharma holdings by default
-  banks:{HDFCBANK:2,ICICIBANK:3,KOTAKBANK:2,CANBK:1,BAJFINANCE:1,BAJAJHFL:1,CHOLAHLDNG:1},
-  chips:{CGPOWER:-1,TDPOWERSYS:-1},
-  china:{},
-  recltd:{RECLTD:-1,PFC:-1},
-  resilience:{HDFCBANK:1,ICICIBANK:1,KOTAKBANK:1,POWERGRID:1,ITC:1,HUL:1,VBL:1,TDPOWERSYS:1,CGPOWER:1,CANBK:1,BAJFINANCE:1,BAJAJHFL:1,CHOLAHLDNG:1,RECLTD:1,PFC:1}
-};
-const STORY_LABEL={crude:'US–Iran conflict / crude oil',tariff:'India–US tariff deadline',banks:'HDFC Bank & ICICI Bank Q1 FY27',chips:'Global AI/semiconductor selloff',china:'China growth slowdown',recltd:'RECLTD/PFC yield & merger watch',resilience:'Nifty/Sensex rally (broad tailwind)'};
 
 function renderHoldings(){
   const h=loadHoldings();
@@ -357,38 +366,10 @@ function renderHoldings(){
     return {i,x,val};
   });
   holdingsTable.innerHTML='<tr><th>Ticker</th><th>Qty</th><th>Avg ₹</th><th>Cur ₹</th><th>Value ₹</th><th></th></tr>'+
-    rows.map(r=>`<tr><td>${r.x.tk}</td><td>${r.x.qty}</td><td>${r.x.avg??'—'}</td><td>${r.x.cur??'(using avg)'}</td><td>${Math.round(r.val).toLocaleString('en-IN')}</td><td><button class="rowbtn" onclick="removeHolding(${r.i})">Remove</button></td></tr>`).join('');
+  rows.map(r=>`<tr><td>${r.x.tk}</td><td>${r.x.qty}</td><td>${r.x.avg??'—'}</td><td>${r.x.cur??'(using avg)'}</td><td>${Math.round(r.val).toLocaleString('en-IN')}</td><td><button class="rowbtn" onclick="removeHolding(${r.i})">Remove</button></td></tr>`).join('');
   portfolioTotals.innerHTML=`Total portfolio value (this list): <b style="color:var(--t)">₹${Math.round(total).toLocaleString('en-IN')}</b> across ${h.length} holding${h.length>1?'s':''}. Values use your entered current price, or avg cost if current price wasn't given.`;
-  renderPortfolioImpact(rows,total);
+ 
 }
 
-function renderPortfolioImpact(rows,total){
-  if(total<=0){portfolioImpact.innerHTML='<span class="emptynote">Add a quantity and price to compute impact.</span>';return}
-  let html='';
-  Object.keys(EXPOSURE).forEach(key=>{
-    const exp=EXPOSURE[key];
-    let weighted=0, coverage=0, contributors=[];
-    rows.forEach(r=>{
-      const w=exp[r.x.tk];
-      if(w){
-        const wt=r.val/total;
-        weighted+=wt*w;
-        coverage+=wt;
-        contributors.push({tk:r.x.tk,pct:(wt*100).toFixed(1),w});
-      }
-    });
-    const pct=(weighted/3*100); // normalise -3..+3 to -100..100 for bar width
-    const dir=weighted>0.15?'up':(weighted<-0.15?'down':'warn');
-    const dirLabel=weighted>0.15?'Net positive':(weighted<-0.15?'Net negative':'Negligible / neutral');
-    const barColor=dir==='up'?'var(--g)':(dir==='down'?'var(--r)':'var(--a)');
-    const barWidth=Math.min(100,Math.abs(pct));
-    html+=`<div class="impactcard" onclick="openTopic('${key}')">
-      <div class="ihead"><b class="tiny">${STORY_LABEL[key]}</b><span class="pill ${dir}">${dirLabel}</span></div>
-      <div class="tiny muted" style="margin-top:4px">${contributors.length?`${(coverage*100).toFixed(0)}% of your portfolio (by value) has direct exposure: `+contributors.map(c=>`${c.tk} (${c.pct}%, ${c.w>0?'+':''}${c.w})`).join(', '):'No direct holding-level exposure identified — this story mainly affects market sentiment, not your specific names.'}</div>
-      <div class="ibar"><span style="width:${barWidth}%;background:${barColor}"></span></div>
-    </div>`;
-  });
-  portfolioImpact.innerHTML=html;
-}
 renderHoldings();
 </script></body></html>
