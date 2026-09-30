@@ -23,7 +23,7 @@
 
 <article class="card radar"><h3>INVESTMENT RADAR</h3><div class="barrow"><span>Private Banks</span><div class="bar"><span style="width:88%"></span></div><b>88</b></div><div class="barrow"><span>IT Services</span><div class="bar"><span style="width:79%"></span></div><b>79</b></div><div class="barrow"><span>Auto</span><div class="bar"><span style="width:74%"></span></div><b>74</b></div><div class="barrow"><span>Metals (China-linked)</span><div class="bar"><span style="width:52%"></span></div><b>52</b></div><div class="barrow"><span>EMS / AI-infra linked</span><div class="bar"><span style="width:41%"></span></div><b>41</b></div><div class="barrow"><span>OMCs / Aviation</span><div class="bar"><span style="width:31%"></span></div><b>31</b></div></article>
 
-<article class="card sectors"><h3>SECTOR RANKING</h3><table><tr><th>Sector</th><th>Score</th><th>Trend</th></tr><tr><td>Financials</td><td>85</td><td class="up">Improving</td></tr><tr><td>IT Services</td><td>80</td><td class="up">Strong (weak ₹)</td></tr><tr><td>Auto</td><td>76</td><td class="up">Strong</td></tr><tr><td>Metals</td><td>52</td><td class="warn">Mixed</td></tr><tr><td>Pharma (export)</td><td>46</td><td class="down">Weak</td></tr><tr><td>Oil Marketing/Aviation</td><td>32</td><td class="down">Weak</td></tr></table></article>
+<article class="card sectors"><h3>SECTOR RANKING</h3><div id="liveSectorRanking"><div class="tiny muted">Calculating current sector signals…</div></div></article>
 
 <article class="card risks"><h3>RISK DASHBOARD</h3><div id="liveRiskDashboard"><div class="risk"><span>Loading current risk signals…</span><b class="warn">Live</b></div></div></article>
 
@@ -179,7 +179,26 @@ async function loadLiveData(){
       </div>`;
     }).join('');
   }
-if(j.intelligence && isCurrentIntelligence(j) && Array.isArray(j.intelligence.topStories)){
+if(j.intelligence && isCurrentIntelligence(j) && Array.isArray(j.intelligence.sectorRanking)){
+  const sectorBox=document.getElementById('liveSectorRanking');
+
+  if(sectorBox){
+    sectorBox.innerHTML=`<table>
+      <tr><th>Sector</th><th>Change</th><th>Trend</th></tr>
+      ${j.intelligence.sectorRanking.map(s=>{
+        const cls=s.change>0?'up':s.change<0?'down':'warn';
+        const sign=s.change>0?'+':'';
+
+        return `<tr>
+          <td>${s.sector}</td>
+          <td class="${cls}">${sign}${Number(s.change).toFixed(2)}%</td>
+          <td class="${cls}">${s.trend}</td>
+        </tr>`;
+      }).join('')}
+    </table>`;
+  }
+}
+      if(j.intelligence && isCurrentIntelligence(j) && Array.isArray(j.intelligence.topStories)){
   const storiesBox=document.getElementById('liveTopStories');
 
   if(storiesBox){
