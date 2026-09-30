@@ -31,7 +31,7 @@
 
 <article class="card watch"><h3>WATCHLIST INTELLIGENCE · your holdings</h3><table><tr><th>Company</th><th>This week's thesis</th><th>Signal</th></tr><tr onclick="openTopic('icici')"><td>ICICI Bank</td><td>Q1 FY27 profit +15.9% YoY, advances +19.6%</td><td class="up">Strengthening</td></tr><tr onclick="openTopic('hdfcb')"><td>HDFC Bank</td><td>Profit +5%, but NIM at record-low 3.26%</td><td class="warn">Mixed</td></tr><tr onclick="openTopic('recltd')"><td>RECLTD / PFC</td><td>Rising G-Sec yields + merger swap-ratio overhang</td><td class="warn">Watch</td></tr><tr onclick="openTopic('cgpower')"><td>CG Power / TD Power</td><td>Capex-cycle names — read-through from global chip selloff</td><td class="warn">Valuation watch</td></tr></table></article>
 
-<article class="card events"><h3>MACRO CALENDAR — NEXT CATALYSTS</h3><div class="event"><time>Jul 24</time><div><b>US tariff deadline</b><p>10% Section 122 baseline expires — deal, extension or lapse.</p></div></div><div class="event"><time>Jul 28–29</time><div><b>FOMC meeting</b><p>Watch for any actual hike vs. continued hawkish hold.</p></div></div><div class="event"><time>Aug 4–6</time><div><b>RBI MPC</b><p>Repo rate decision; FY27 CPI/GDP projections were already revised (5.1% / 6.6%).</p></div></div><div class="event"><time>Ongoing</time><div><b>Q1 FY27 earnings season</b><p>See Results Calendar below for full list →</p></div></div></article>
+<article class="card events"><h3>MACRO CALENDAR — CURRENT CATALYSTS</h3><div id="liveMacroCalendar"><div class="event"><time>Live</time><div><b>Updating upcoming catalysts…</b><p>Current macro and market events will appear here.</p></div></div></div></article>
 
 <article class="card" style="grid-column:span 12"><h3>RESULTS CALENDAR — Q1 FY27</h3><table id="resultsTable"></table><p class="tiny muted" style="margin-top:10px">★ = a stock you hold (edit your holdings below to personalise this). Dates marked TBD had not been formally announced by the company as of this snapshot.</p></article>
 
@@ -216,7 +216,40 @@ if(j.intelligence && isCurrentIntelligence(j) && Array.isArray(j.intelligence.to
     }).join('');
   }
 }
-      snapLiveNote.textContent=j.updatedAtIST?('· backend updated '+j.updatedAtIST):'';
+     if(j.intelligence && isCurrentIntelligence(j) && Array.isArray(j.intelligence.macroCalendar)){
+  const calendarBox=document.getElementById('liveMacroCalendar');
+
+  if(calendarBox){
+    calendarBox.innerHTML=j.intelligence.macroCalendar.length
+      ? j.intelligence.macroCalendar.map(e=>{
+          const rawDate=e.date||'';
+          let displayDate='Current';
+
+          if(rawDate){
+            const d=new Date(rawDate);
+            if(!Number.isNaN(d.getTime())){
+              displayDate=d.toLocaleDateString('en-IN',{
+                day:'2-digit',
+                month:'short',
+                timeZone:'Asia/Kolkata'
+              });
+            }
+          }
+
+          const link=e.link||'#';
+
+          return `<div class="event">
+            <time>${displayDate}</time>
+            <div>
+              <b><a href="${link}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">${e.title||'Macro update'}</a></b>
+              <p>${e.source||'MarketMind'} · current macro catalyst</p>
+            </div>
+          </div>`;
+        }).join('')
+      : '<div class="event"><time>Live</time><div><b>No major macro catalyst in current feed</b><p>MarketMind will update automatically.</p></div></div>';
+  }
+}
+  snapLiveNote.textContent=j.updatedAtIST?('· backend updated '+j.updatedAtIST):'';
     liveBadge.textContent=anyLive?'Live data connected':'Backend reachable, no fields live yet';
     liveBadge.className=anyLive?'pill up':'pill warn';
   }
