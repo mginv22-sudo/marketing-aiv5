@@ -93,10 +93,7 @@ async function loadLiveData(){
   anyLive=true;
 }
 }
-    if(j.macro){
-  if(j.macro.us10y && !j.macro.us10y.error){
-    T.chips.m[1]=['US 10Y Treasury',j.macro.us10y.value+'%','live, '+j.macro.us10y.date];
-  }
+  
 
   if(j.macro.brent && !j.macro.brent.error){
     brentVal.textContent='$'+Number(j.macro.brent.value).toFixed(2);
