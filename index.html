@@ -346,7 +346,6 @@ if(j.intelligence && isCurrentIntelligence(j) && Array.isArray(j.intelligence.se
       snapLiveNote.textContent=j.updatedAtIST?('· backend updated '+j.updatedAtIST):'';
     liveBadge.textContent=anyLive?'Live data connected':'Backend reachable, no fields live yet';
     liveBadge.className=anyLive?'pill up':'pill warn';
-  }
   }catch(e){
     console.error('MarketMind loadLiveData error:', e);
     liveBadge.textContent='Backend configured but unreachable — showing snapshot values';
