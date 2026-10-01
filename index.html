@@ -99,7 +99,7 @@ if(j.macro.brent && !j.macro.brent.error){
   const oil=j.macro.brent;
   brentVal.textContent='₹'+Number(oil.priceINR).toLocaleString('en-IN')+
     ' / $'+Number(oil.priceUSD).toFixed(2);
-  brentDetail.textContent=
+ document.getElementById('brentDetail').textContent=
     (oil.percentChange>=0?'+':'')+Number(oil.percentChange).toFixed(2)+'% · FYERS · '+(oil.contract||'MCX Crude');
   anyLive=true;
 }
