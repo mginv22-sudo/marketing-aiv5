@@ -97,11 +97,21 @@ async function loadLiveData(){
 
 if(j.macro.brent && !j.macro.brent.error){
   const oil=j.macro.brent;
-  brentVal.textContent='₹'+Number(oil.priceINR).toLocaleString('en-IN')+
-    ' / $'+Number(oil.priceUSD).toFixed(2);
- document.getElementById('brentDetail').textContent=
-    (oil.percentChange>=0?'+':'')+Number(oil.percentChange).toFixed(2)+'% · FYERS · '+(oil.contract||'MCX Crude');
-  anyLive=true;
+  const oilVal=document.getElementById('brentVal');
+  const oilDetail=document.getElementById('brentDetail');
+
+  if(oilVal && oilDetail){
+    oilVal.textContent='₹'+Number(oil.priceINR).toLocaleString('en-IN')+
+      ' / $'+Number(oil.priceUSD).toFixed(2);
+
+    oilDetail.textContent=
+      (oil.percentChange>=0?'+':'')+
+      Number(oil.percentChange).toFixed(2)+
+      '% · FYERS · '+(oil.contract||'MCX Crude');
+
+    anyLive=true;
+  }
+}
 }
 }
       
