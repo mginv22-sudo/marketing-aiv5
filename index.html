@@ -29,11 +29,11 @@
 
 <article class="card committee"><h3>AI INVESTMENT COMMITTEE</h3><div id="liveCommittee"><div class="scenario"><div class="scenario-head"><b class="warn">Updating current scenarios…</b><span>Live</span></div><p>Building scenarios from current market and macro risk signals.</p></div></div></article>
 
-<art<article class="card watch"><h3>WATCHLIST INTELLIGENCE · your holdings</h3><div id="liveWatchlist"><div class="tiny muted">Building current intelligence from your holdings, market data and news…</div></div></article>
+<article class="card watch"><h3>WATCHLIST INTELLIGENCE · your holdings</h3><div id="liveWatchlist"><div class="tiny muted">Building current intelligence from your holdings, market data and news…</div></div></article>
 
 <article class="card events"><h3>MACRO CALENDAR — CURRENT CATALYSTS</h3><div id="liveMacroCalendar"><div class="event"><time>Live</time><div><b>Updating upcoming catalysts…</b><p>Current macro and market events will appear here.</p></div></div></div></article>
 
-<article <article class="card events" style="grid-column:span 12"><h3>RESULTS CALENDAR</h3><div id="liveResultsCalendar"><div class="tiny muted">Updating current and upcoming company results…</div></div></article>
+<article class="card events" style="grid-column:span 12"><h3>RESULTS CALENDAR</h3><div id="liveResultsCalendar"><div class="tiny muted">Updating current and upcoming company results…</div></div></article>
 
 <article class="card" style="grid-column:span 12"><h3>MY PORTFOLIO <button class="btn" style="float:right;font-size:11px;padding:7px 11px" onclick="toggleAddForm()">+ Add holding</button></h3>
 <p class="tiny muted">Add your holdings once — they're saved in this browser (not sent anywhere) and used below to work out how each story actually affects <i>your</i> portfolio, not just the stock price.</p>
@@ -315,7 +315,38 @@ if(j.intelligence && isCurrentIntelligence(j) && Array.isArray(j.intelligence.se
       : '<div class="event"><time>Live</time><div><b>No major macro catalyst in current feed</b><p>MarketMind will update automatically.</p></div></div>';
   }
 }
-  snapLiveNote.textContent=j.updatedAtIST?('· backend updated '+j.updatedAtIST):'';
+ if(j.resultsCalendar && Array.isArray(j.resultsCalendar.events)){
+  const resultsBox=document.getElementById('liveResultsCalendar');
+
+  if(resultsBox){
+    const events=j.resultsCalendar.events.slice(0,20);
+
+    if(events.length){
+      resultsBox.innerHTML=`<table>
+        <tr>
+          <th>Date</th>
+          <th>Symbol</th>
+          <th>Company</th>
+          <th>Event</th>
+        </tr>
+        ${events.map(e=>`
+          <tr>
+            <td>${e.date||'—'}</td>
+            <td><b>${e.symbol||'—'}</b></td>
+            <td>${e.company||'—'}</td>
+            <td>${e.purpose||'Financial Results'}</td>
+          </tr>
+        `).join('')}
+      </table>
+      <div class="tiny muted" style="margin-top:8px">
+        Source: NSE Corporate Filings Event Calendar · Live backend data
+      </div>`;
+    }else{
+      resultsBox.innerHTML='<div class="tiny muted">No upcoming financial-result meetings currently returned by NSE.</div>';
+    }
+  }
+}
+      snapLiveNote.textContent=j.updatedAtIST?('· backend updated '+j.updatedAtIST):'';
     liveBadge.textContent=anyLive?'Live data connected':'Backend reachable, no fields live yet';
     liveBadge.className=anyLive?'pill up':'pill warn';
   }
