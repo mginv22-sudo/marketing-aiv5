@@ -351,6 +351,7 @@ if(j.intelligence && isCurrentIntelligence(j) && Array.isArray(j.intelligence.se
     liveBadge.className=anyLive?'pill up':'pill warn';
   }
   }catch(e){
+    console.error('MarketMind loadLiveData error:', e);
     liveBadge.textContent='Backend configured but unreachable — showing snapshot values';
     liveBadge.className='pill down';
   }
