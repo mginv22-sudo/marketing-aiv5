@@ -15,7 +15,7 @@
 
 <article class="card bias"><h3>MARKET BIAS</h3><span id="marketBiasScore" class="score">--</span> <b id="marketBiasLabel" class="warn">Updating...</b><div class="meter"><span id="marketBiasMeter" style="width:50%"></span></div><p id="marketBiasText" class="tiny muted">Calculating current bias from live market and macro signals.</p></article>
 
-<article class="card snap"><h3>MARKET SNAPSHOT <small id="snapLiveNote" class="muted tiny"></small></h3><div class="kpis"><div class="kpi"><span>NIFTY 50</span><b id="niftyVal">Loading...</b><small id="niftyDelta">live via FYERS</small></div><div class="kpi"><span>USD/INR</span><b id="usdinrVal">Loading...</b><small id="usdinrDelta">live reference</small></div><div class="kpi"><span>US 10Y</span><b id="us10yVal">Loading...</b><small id="us10yDelta">live via FRED</small></div><div class="kpi"><span>BRENT CRUDE</span><b id="brentVal">Loading...</b><small id="brentDelta">live via EIA</small></div></div></article>
+<article class="card snap"><h3>MARKET SNAPSHOT <small id="snapLiveNote" class="muted tiny"></small></h3><div class="kpis"><div class="kpi"><span>NIFTY 50</span><b id="niftyVal">Loading...</b><small id="niftyDelta">live via FYERS</small></div><div class="kpi"><span>USD/INR</span><b id="usdinrVal">Loading...</b><small id="usdinrDelta">live reference</small></div><div class="kpi"><span>US 10Y</span><b id="us10yVal">Loading...</b><small id="us10yDelta">live via FRED</small></div><div class="kpi"><span>MCX CRUDE</span><b id="brentVal">Loading...</b><small id="brentDelta">live via EIA</small></div></div></article>
 
 <article class="card" style="grid-column:span 12"><h3>LATEST HEADLINES <small class="muted tiny">— live via free RSS, once backend is connected</small></h3><div id="headlinesList" class="tiny muted">Connect the backend (see SETUP_GUIDE.md) to show live headlines here — until then this card stays empty rather than showing stale placeholder text.</div></article>
 
@@ -95,11 +95,14 @@ async function loadLiveData(){
 }
   
 
-  if(j.macro.brent && !j.macro.brent.error){
-    brentVal.textContent='$'+Number(j.macro.brent.value).toFixed(2);
-    brentDelta.textContent='live via EIA · '+j.macro.brent.date+' · tap for detail';
-    anyLive=true;
-  }
+if(j.macro.brent && !j.macro.brent.error){
+  const oil=j.macro.brent;
+  brentVal.textContent='₹'+Number(oil.priceINR).toLocaleString('en-IN')+
+    ' / $'+Number(oil.priceUSD).toFixed(2);
+  brentDetail.textContent=
+    (oil.percentChange>=0?'+':'')+Number(oil.percentChange).toFixed(2)+'% · FYERS · '+(oil.contract||'MCX Crude');
+  anyLive=true;
+}
 }
       
     if(j.headlines && j.headlines.length){
