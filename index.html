@@ -426,7 +426,7 @@ function renderHoldings(){
   holdingsTable.innerHTML='<tr><th>Ticker</th><th>Qty</th><th>Avg ₹</th><th>Cur ₹</th><th>Value ₹</th><th></th></tr>'+
   rows.map(r=>`<tr><td>${r.x.tk}</td><td>${r.x.qty}</td><td>${r.x.avg??'—'}</td><td>${r.x.cur??'(using avg)'}</td><td>${Math.round(r.val).toLocaleString('en-IN')}</td><td><button class="rowbtn" onclick="removeHolding(${r.i})">Remove</button></td></tr>`).join('');
   portfolioTotals.innerHTML=`Total portfolio value (this list): <b style="color:var(--t)">₹${Math.round(total).toLocaleString('en-IN')}</b> across ${h.length} holding${h.length>1?'s':''}. Values use your entered current price, or avg cost if current price wasn't given.`;
- 
+ portfolioImpact.innerHTML='<span class="emptynote">Live portfolio news intelligence is shown in the Watchlist Intelligence section above.</span>';
 }
 
 renderHoldings();
