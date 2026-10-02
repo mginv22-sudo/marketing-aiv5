@@ -77,18 +77,22 @@ async function loadLiveData(){
     const j=await r.json();
     if(j.error){throw new Error(j.error)}
     let anyLive=false;
-    if(j.market){
-    if(j.market.nifty && !j.market.nifty.error){
+   if(j.market?.nifty && !j.market.nifty.error){
   const niftyValEl=document.getElementById('niftyVal');
   const niftyDeltaEl=document.getElementById('niftyDelta');
+  const n=j.market.nifty;
 
-  if(niftyValEl && niftyDeltaEl){
-    niftyValEl.textContent=Number(j.market.nifty.price).toLocaleString('en-IN',{maximumFractionDigits:2});
-    const chg=Number(j.market.nifty.change || 0);
+  if(niftyValEl){
+    niftyValEl.textContent=Number(n.price).toLocaleString('en-IN',{maximumFractionDigits:2});
+  }
+
+  if(niftyDeltaEl){
+    const chg=Number(n.change || 0);
     niftyDeltaEl.textContent=(chg>=0?'+':'')+chg.toFixed(2)+'% · FYERS';
     niftyDeltaEl.className=chg>=0?'up':'down';
-    anyLive=true;
   }
+
+  anyLive=true;
 }
   if(j.market.usdinr && !j.market.usdinr.error){
   const usdinrValEl=document.getElementById('usdinrVal');
