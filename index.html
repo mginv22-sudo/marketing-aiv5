@@ -78,13 +78,18 @@ async function loadLiveData(){
     if(j.error){throw new Error(j.error)}
     let anyLive=false;
     if(j.market){
-      if(j.market.nifty && !j.market.nifty.error){
-        niftyVal.textContent=Number(j.market.nifty.price).toLocaleString('en-IN',{maximumFractionDigits:2});
-        const chg=j.market.nifty.change;
-        niftyDelta.textContent=(chg>=0?'+':'')+chg.toFixed(2)+'% · live · tap for detail';
-        niftyDelta.className=chg>=0?'up':'down';
-        anyLive=true;
-      }
+    if(j.market.nifty && !j.market.nifty.error){
+  const niftyValEl=document.getElementById('niftyVal');
+  const niftyDeltaEl=document.getElementById('niftyDelta');
+
+  if(niftyValEl && niftyDeltaEl){
+    niftyValEl.textContent=Number(j.market.nifty.price).toLocaleString('en-IN',{maximumFractionDigits:2});
+    const chg=Number(j.market.nifty.change || 0);
+    niftyDeltaEl.textContent=(chg>=0?'+':'')+chg.toFixed(2)+'% · FYERS';
+    niftyDeltaEl.className=chg>=0?'up':'down';
+    anyLive=true;
+  }
+}
     if(j.market.usdinr && !j.market.usdinr.error){
   usdinrVal.textContent=Number(j.market.usdinr.price).toFixed(2);
  if(j.macro.us10y && !j.macro.us10y.error){
