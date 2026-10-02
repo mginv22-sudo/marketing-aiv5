@@ -90,12 +90,23 @@ async function loadLiveData(){
     anyLive=true;
   }
 }
-    if(j.market.usdinr && !j.market.usdinr.error){
-  usdinrVal.textContent=Number(j.market.usdinr.price).toFixed(2);
- if(j.macro.us10y && !j.macro.us10y.error){
-  us10yVal.textContent=Number(j.macro.us10y.value).toFixed(2)+'%';
-  us10yDelta.textContent='live via FRED · '+j.macro.us10y.date;
-  anyLive=true;
+  if(j.market.usdinr && !j.market.usdinr.error){
+  const usdinrValEl=document.getElementById('usdinrVal');
+  if(usdinrValEl){
+    usdinrValEl.textContent=Number(j.market.usdinr.price).toFixed(2);
+    anyLive=true;
+  }
+}
+
+if(j.macro.us10y && !j.macro.us10y.error){
+  const us10yValEl=document.getElementById('us10yVal');
+  const us10yDeltaEl=document.getElementById('us10yDelta');
+
+  if(us10yValEl && us10yDeltaEl){
+    us10yValEl.textContent=Number(j.macro.us10y.value).toFixed(2)+'%';
+    us10yDeltaEl.textContent='live via FRED · '+j.macro.us10y.date;
+    anyLive=true;
+  }
 }
 }
   
