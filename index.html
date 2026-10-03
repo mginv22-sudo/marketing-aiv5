@@ -380,12 +380,20 @@ const instBox = document.getElementById('liveInstitutional');
 if (instBox && j.institutionalCash) {
   const c = j.institutionalCash;
   const r = j.institutionalRolling || {};
+  const ii = j.institutionalIntelligence || {};
 
   const fiiNet = Number(c.fii?.net || 0);
   const diiNet = Number(c.dii?.net || 0);
 
+  const combinedNet = Number(
+    ii.combined1D ?? r.combined1D ?? (fiiNet + diiNet)
+  );
+
+  const regime = ii.regime || 'Building history...';
+
   const fiiClass = fiiNet >= 0 ? 'up' : 'down';
   const diiClass = diiNet >= 0 ? 'up' : 'down';
+  const combinedClass = combinedNet >= 0 ? 'up' : 'down';
 
   instBox.innerHTML = `
     <div class="risk">
@@ -400,11 +408,12 @@ if (instBox && j.institutionalCash) {
 
     <div class="risk">
       <span>Combined Institutional Flow</span>
-      <b class="${Number(r.netCombined1D || 0) >= 0 ? 'up' : 'down'}">₹${Number(r.netCombined1D || 0).toLocaleString('en-IN')} Cr</b>
+      <b class="${combinedClass}">₹${combinedNet.toLocaleString('en-IN')} Cr</b>
+    </div>
 
     <div class="risk">
       <span>Flow Regime</span>
-      <b>${r.regime || 'Building history…'}</b>
+      <b>${regime}</b>
     </div>
 
     <div class="tiny muted" style="margin-top:8px">
