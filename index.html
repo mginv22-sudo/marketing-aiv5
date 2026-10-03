@@ -400,8 +400,7 @@ if (instBox && j.institutionalCash) {
 
     <div class="risk">
       <span>Combined Institutional Flow</span>
-      <b>₹${Number(r.combined1D || 0).toLocaleStri<b class="${Number(r.netCombined1D || 0) >= 0 ? 'up' : 'down'}">₹${Number(r.netCombined1D || 0).toLocaleString('en-IN')} Cr</b>
-    </div>
+      <b class="${Number(r.netCombined1D || 0) >= 0 ? 'up' : 'down'}">₹${Number(r.netCombined1D || 0).toLocaleString('en-IN')} Cr</b>
 
     <div class="risk">
       <span>Flow Regime</span>
