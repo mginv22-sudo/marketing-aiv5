@@ -30,11 +30,13 @@
 <article class="card committee"><h3>AI INVESTMENT COMMITTEE</h3><div id="liveCommittee"><div class="scenario"><div class="scenario-head"><b class="warn">Updating current scenarios…</b><span>Live</span></div><p>Building scenarios from current market and macro risk signals.</p></div></div></article>
 
 <article class="card watch"><h3>WATCHLIST INTELLIGENCE · your holdings</h3><div id="liveWatchlist"><div class="tiny muted">Building current intelligence from your holdings, market data and news…</div></div></article>
-
+<article class="card" style="grid-column:span 12"><h3>INSTITUTIONAL INTELLIGENCE</h3><div id="liveInstitutional"><div class="tiny muted">Loading FII/FPI and DII institutional flows…</div></div></article>
+  
 <article class="card events"><h3>MACRO CALENDAR — CURRENT CATALYSTS</h3><div id="liveMacroCalendar"><div class="event"><time>Live</time><div><b>Updating upcoming catalysts…</b><p>Current macro and market events will appear here.</p></div></div></div></article> 
 
 <article class="card events" style="grid-column:span 12"><h3>RESULTS CALENDAR</h3><div id="liveResultsCalendar"><div class="tiny muted">Updating current and upcoming company results…</div></div></article>
 
+<article class="card" style="grid-column:span 12"><h3>INSTITUTIONAL INTELLIGENCE</h3><div id="liveInstitutionalIntelligence"><div class="tiny muted">Loading FII / DII institutional flow intelligence…</div></div></article>  
 <article class="card" style="grid-column:span 12"><h3>MY PORTFOLIO <button class="btn" style="float:right;font-size:11px;padding:7px 11px" onclick="toggleAddForm()">+ Add holding</button></h3>
 <p class="tiny muted">Add your holdings once — they're saved in this browser (not sent anywhere) and used below to work out how each story actually affects <i>your</i> portfolio, not just the stock price.</p>
 <div id="addForm" class="formrow" style="display:none">
@@ -373,7 +375,46 @@ if(j.intelligence && isCurrentIntelligence(j) && Array.isArray(j.intelligence.se
     }
   }
 }
-      snapLiveNote.textContent=j.updatedAtIST?('· backend updated '+j.updatedAtIST):'';
+  // ===== Institutional Intelligence =====
+const instBox = document.getElementById('liveInstitutional');
+
+if (instBox && j.institutionalCash) {
+  const c = j.institutionalCash;
+  const r = j.institutionalRolling || {};
+
+  const fiiNet = Number(c.fii?.net || 0);
+  const diiNet = Number(c.dii?.net || 0);
+
+  const fiiClass = fiiNet >= 0 ? 'up' : 'down';
+  const diiClass = diiNet >= 0 ? 'up' : 'down';
+
+  instBox.innerHTML = `
+    <div class="risk">
+      <span>FII/FPI Cash — 1D</span>
+      <b class="${fiiClass}">₹${fiiNet.toLocaleString('en-IN')} Cr</b>
+    </div>
+
+    <div class="risk">
+      <span>DII Cash — 1D</span>
+      <b class="${diiClass}">₹${diiNet.toLocaleString('en-IN')} Cr</b>
+    </div>
+
+    <div class="risk">
+      <span>Combined Institutional Flow</span>
+      <b>₹${Number(r.combined1D || 0).toLocaleString('en-IN')} Cr</b>
+    </div>
+
+    <div class="risk">
+      <span>Flow Regime</span>
+      <b>${r.regime || 'Building history…'}</b>
+    </div>
+
+    <div class="tiny muted" style="margin-top:8px">
+      ${r.availableDays || 1} trading day(s) stored · Source: NSE
+    </div>
+  `;
+}
+    snapLiveNote.textContent=j.updatedAtIST?('· backend updated '+j.updatedAtIST):'';
     liveBadge.textContent=anyLive?'Live data connected':'Backend reachable, no fields live yet';
     liveBadge.className=anyLive?'pill up':'pill warn';
   }catch(e){
